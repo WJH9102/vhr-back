@@ -2,6 +2,8 @@ package cn.junhaox.vhrBack.mapper;
 
 import cn.junhaox.vhrBack.model.Menu;
 
+import java.util.List;
+
 public interface MenuMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -14,4 +16,5 @@ public interface MenuMapper {
     int updateByPrimaryKeySelective(Menu record);
 
     int updateByPrimaryKey(Menu record);
+    List<Menu> getMenusByHrId(int hrId);
 }
