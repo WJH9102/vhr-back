@@ -17,4 +17,6 @@ public interface MenuMapper {
 
     int updateByPrimaryKey(Menu record);
     List<Menu> getMenusByHrId(int hrId);
+
+    List<Menu> getMenuWithRole();
 }

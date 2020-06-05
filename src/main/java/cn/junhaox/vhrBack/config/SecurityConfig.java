@@ -8,13 +8,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.*;
+import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.AuthenticationEntryPointFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -38,6 +41,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     HrService hrService;
 
+    @Autowired
+    CustomFilterInvocationSecurityMetadataSource customFilterInvocationSecurityMetadataSource;
+
+    @Autowired
+    CustomUrlDecisionManager customUrlDecisionManager;
+
     @Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -49,8 +58,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().antMatchers("/css/**", "/js/**", "/index.html", "/img/**", "/fonts/**", "/favicon.ico", "/verifyCode");
+    }
+
+    @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
+                .withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
+                    @Override
+                    public <O extends FilterSecurityInterceptor> O postProcess(O o) {
+                        o.setAccessDecisionManager(customUrlDecisionManager);
+                        o.setSecurityMetadataSource(customFilterInvocationSecurityMetadataSource);
+                        return o;
+                    }
+                })
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -111,6 +133,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 })
                 .permitAll()
                 .and()
-                .csrf().disable();
+                .csrf().disable().exceptionHandling()
+                .authenticationEntryPoint((req, resp, authException) -> {
+                            resp.setContentType("application/json;charset=utf-8");
+                            resp.setStatus(401);
+                            PrintWriter out = resp.getWriter();
+                            RespBeen respBean = RespBeen.error("访问失败!");
+                            if (authException instanceof InsufficientAuthenticationException) {
+                                respBean.setMsg("请求失败，请联系管理员!");
+                            }
+                            out.write(new ObjectMapper().writeValueAsString(respBean));
+                            out.flush();
+                            out.close();
+                        }
+                );
     }
 }

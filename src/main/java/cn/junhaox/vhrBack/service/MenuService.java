@@ -19,4 +19,10 @@ public class MenuService {
     public List<Menu> getMenusByHrId(int hrId) {
         return menuMapper.getMenusByHrId(hrId);
     }
+
+    public List<Menu> getMenuWithRole() {
+        return menuMapper.getMenuWithRole();
+    }
+
+
 }

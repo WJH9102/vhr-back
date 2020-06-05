@@ -34,6 +34,14 @@
         </collection>
     </resultMap>
 
+    <resultMap id="MenuWithRole" type="cn.junhaox.vhrBack.model.Menu" extends="BaseResultMap">
+        <collection property="roles" ofType="cn.junhaox.vhrBack.model.Role">
+            <id column="rid" property="id" jdbcType="INTEGER"/>
+            <result column="rname" property="name" jdbcType="VARCHAR"/>
+            <result column="rnameZh" property="nameZh" jdbcType="VARCHAR"/>
+        </collection>
+    </resultMap>
+
     <select id="getMenusByHrId" resultMap="Menus2">
       SELECT DISTINCT
           m1.*, m2.`id` AS id2,
@@ -61,6 +69,20 @@
           m2.`id`
   </select>
 
+    <select id="getMenuWithRole" resultMap="MenuWithRole">
+        SELECT
+            m.*,
+            r.id rid,
+            r.`name` rname,
+            r.nameZh rnameZh
+        FROM
+            menu m,
+            menu_role mr,
+            role r
+        WHERE
+            m.id = mr.mid
+        AND mr.rid = r.id;
+    </select>
 
     <sql id="Base_Column_List">
     id, url, path, component, name, iconCls, keepAlive, requireAuth, parentId, enabled

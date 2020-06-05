@@ -2,11 +2,14 @@ package cn.junhaox.vhrBack.service;
 
 import cn.junhaox.vhrBack.mapper.HrMapper;
 import cn.junhaox.vhrBack.model.Hr;
+import cn.junhaox.vhrBack.model.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author ibytecode2020@gmail.com
@@ -24,6 +27,7 @@ public class HrService implements UserDetailsService {
         if (null == hr) {
             throw new UsernameNotFoundException("用户名不存在");
         }
+        hr.setRoles(hrMapper.getHrRolesById(hr.getId()));
         return hr;
     }
 }

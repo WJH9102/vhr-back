@@ -1,6 +1,9 @@
 package cn.junhaox.vhrBack.mapper;
 
 import cn.junhaox.vhrBack.model.Hr;
+import cn.junhaox.vhrBack.model.Role;
+
+import java.util.List;
 
 public interface HrMapper {
     int deleteByPrimaryKey(Integer id);
@@ -16,4 +19,6 @@ public interface HrMapper {
     int updateByPrimaryKey(Hr record);
 
     Hr loadUserByUsername(String username);
+
+    List<Role> getHrRolesById(int id);
 }
