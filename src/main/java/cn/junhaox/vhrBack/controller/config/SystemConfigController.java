@@ -1,4 +1,4 @@
-package cn.junhaox.vhrBack.controller;
+package cn.junhaox.vhrBack.controller.config;
 
 import cn.junhaox.vhrBack.model.Hr;
 import cn.junhaox.vhrBack.model.Menu;
