@@ -1,8 +1,8 @@
 package cn.junhaox.vhrBack.controller.system.basic;
 
-import cn.junhaox.vhrBack.model.Position;
+import cn.junhaox.vhrBack.model.JobLevel;
 import cn.junhaox.vhrBack.model.RespBeen;
-import cn.junhaox.vhrBack.service.PositionService;
+import cn.junhaox.vhrBack.service.JobLevelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,46 +11,45 @@ import java.util.List;
 /**
  * @author ibytecode2020@gmail.com
  * create by Wang Junhao
- * @date 2020/6/6 10:01
+ * @date 2020/6/14 9:41
  */
 @RestController
-@RequestMapping("/system/basic/pos")
-public class PositionController {
+@RequestMapping("/system/basic/joblevel")
+public class JobLevelController {
     @Autowired
-    PositionService positionService;
-
+    JobLevelService jobLevelService;
     @GetMapping("/")
-    public List<Position> getAllPositions() {
-        return positionService.getAllPositions();
+    public List<JobLevel> getAllJobLevels() {
+        return jobLevelService.getAllJobLevels();
     }
 
     @PostMapping("/")
-    public RespBeen addPosition(@RequestBody Position position) {
-        if (positionService.addPosition(position) == 1) {
+    public RespBeen addJobLevel(@RequestBody JobLevel jobLevel) {
+        if (jobLevelService.addJobLevel(jobLevel) == 1) {
             return RespBeen.ok("添加成功!");
         }
         return RespBeen.error("添加失败!");
     }
 
     @PutMapping("/")
-    public RespBeen updatePositions(@RequestBody Position position) {
-        if (positionService.updatePositions(position) == 1) {
+    public RespBeen updateJobLevelById(@RequestBody JobLevel jobLevel) {
+        if (jobLevelService.updateJobLevelById(jobLevel) == 1) {
             return RespBeen.ok("更新成功!");
         }
         return RespBeen.error("更新失败!");
     }
 
     @DeleteMapping("/{id}")
-    public RespBeen deletePositionById(@PathVariable Integer id) {
-        if (positionService.deletePositionById(id) == 1) {
+    public RespBeen deleteJobLevelById(@PathVariable Integer id) {
+        if (jobLevelService.deleteJobLevelById(id) == 1) {
             return RespBeen.ok("删除成功!");
         }
         return RespBeen.error("删除失败!");
     }
 
     @DeleteMapping("/")
-    public RespBeen deletePositionByIds(Integer[] ids) {
-        if (positionService.deletePositionsByIds(ids) == ids.length) {
+    public RespBeen deleteJobLevelsByIds(Integer[] ids) {
+        if (jobLevelService.deleteJobLevelsByIds(ids) == ids.length) {
             return RespBeen.ok("删除成功!");
         }
         return RespBeen.error("删除失败!");

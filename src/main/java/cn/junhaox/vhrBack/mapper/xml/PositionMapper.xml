@@ -25,6 +25,12 @@
     delete from position
     where id = #{id,jdbcType=INTEGER}
   </delete>
+  <delete id="deletePositionsByIds">
+    delete from position where id in
+    <foreach collection="ids" item="id" separator="," open="(" close=")">
+      #{id}
+    </foreach>
+  </delete>
   <insert id="insert" parameterType="cn.junhaox.vhrBack.model.Position" >
     insert into position (id, name, createDate, 
       enabled)

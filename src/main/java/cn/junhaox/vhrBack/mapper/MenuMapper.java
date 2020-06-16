@@ -1,6 +1,7 @@
 package cn.junhaox.vhrBack.mapper;
 
 import cn.junhaox.vhrBack.model.Menu;
+import cn.junhaox.vhrBack.model.Role;
 
 import java.util.List;
 
@@ -19,4 +20,9 @@ public interface MenuMapper {
     List<Menu> getMenusByHrId(int hrId);
 
     List<Menu> getMenuWithRole();
+
+    List<Menu> getAllMenus();
+
+    List<Integer> getMidsByRid(Integer rid);
+
 }
