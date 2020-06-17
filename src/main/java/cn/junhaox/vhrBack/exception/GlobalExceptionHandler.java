@@ -1,4 +1,4 @@
-package cn.junhaox.vhrBack;
+package cn.junhaox.vhrBack.exception;
 
 import cn.junhaox.vhrBack.model.RespBeen;
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;

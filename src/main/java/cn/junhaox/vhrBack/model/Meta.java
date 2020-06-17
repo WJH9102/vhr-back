@@ -1,11 +1,13 @@
 package cn.junhaox.vhrBack.model;
 
+import java.io.Serializable;
+
 /**
  * @author ibytecode2020@gmail.com
  * create by Wang Junhao
  * @date 2020/6/2 21:07
  */
-public class Meta {
+public class Meta implements Serializable {
     private Boolean keepAlive;
     private Boolean requireAuth;
 

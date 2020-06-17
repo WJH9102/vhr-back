@@ -30,8 +30,10 @@ public class SystemConfigController {
     public RespBeen getMenusByHrId() {
         Integer id = ((Hr) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
         List<Menu> menus = menuService.getMenusByHrId(id);
+        List<Menu> menuWithRole = menuService.getMenuWithRole();
         Map<String, Object> data = new HashMap<>();
         data.put("menus", menus);
+        data.put("menuWithRole", menuWithRole);
         return RespBeen.ok("获取菜单成功!", data);
 
     }

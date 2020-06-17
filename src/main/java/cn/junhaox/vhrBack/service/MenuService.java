@@ -5,7 +5,10 @@ import cn.junhaox.vhrBack.mapper.MenuRoleMapper;
 import cn.junhaox.vhrBack.model.Menu;
 import cn.junhaox.vhrBack.model.Role;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -15,6 +18,7 @@ import java.util.List;
  * @date 2020/6/2 21:39
  */
 @Service
+@CacheConfig(cacheNames = "menus_cache")
 public class MenuService {
     @Autowired
     MenuMapper menuMapper;
@@ -26,10 +30,10 @@ public class MenuService {
         return menuMapper.getMenusByHrId(hrId);
     }
 
+    @Cacheable
     public List<Menu> getMenuWithRole() {
         return menuMapper.getMenuWithRole();
     }
-
 
     public List<Menu> getAllMenus() {
         return menuMapper.getAllMenus();
@@ -39,6 +43,7 @@ public class MenuService {
         return menuMapper.getMidsByRid(rid);
     }
 
+    @Transactional
     public boolean updateMenuRole(Integer rid, Integer[] mids) {
         menuRoleMapper.deleteByRid(rid);
         if (mids == null || mids.length == 0) {
