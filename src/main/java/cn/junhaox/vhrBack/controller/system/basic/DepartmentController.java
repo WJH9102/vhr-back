@@ -27,11 +27,25 @@ public class DepartmentController {
 
     @DeleteMapping("/{id}")
     public RespBeen deleteDeptById(@PathVariable Integer id) {
-        return RespBeen.ok("删除成功");
+        Department dept = new Department();
+        dept.setId(id);
+        departmentService.deleteDeptById(dept);
+        if (dept.getResult() == 1) {
+            return RespBeen.ok("删除成功");
+        } else if (dept.getResult() == -1) {
+            return RespBeen.error("该部门下有员工，删除失败");
+        } else if (dept.getResult() == -2) {
+            return RespBeen.error("该部门下有子部门，删除失败");
+        }
+        return RespBeen.ok("删除失败");
     }
 
-    @DeleteMapping("/")
+    @PostMapping("/")
     public RespBeen addDept(@RequestBody Department dept) {
-        return RespBeen.ok("删除成功");
+        departmentService.addDept(dept);
+        if (dept.getResult() == 1) {
+            return RespBeen.ok("添加成功", dept);
+        }
+        return RespBeen.error("添加失败");
     }
 }

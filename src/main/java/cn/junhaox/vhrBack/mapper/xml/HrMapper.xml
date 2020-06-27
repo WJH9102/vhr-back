@@ -13,6 +13,15 @@
     <result column="userface" property="userface" jdbcType="VARCHAR" />
     <result column="remark" property="remark" jdbcType="VARCHAR" />
   </resultMap>
+
+  <resultMap id="GetAllHrsMap" type="cn.junhaox.vhrBack.model.Hr" extends="BaseResultMap">
+    <collection property="roles" ofType="cn.junhaox.vhrBack.model.Role">
+      <id column="rid" property="id"/>
+      <result column="rname" property="name"/>
+      <result column="rnameZh" property="nameZh"/>
+    </collection>
+  </resultMap>
+
   <sql id="Base_Column_List" >
     id, name, phone, telephone, address, enabled, username, password, userface, remark
   </sql>
@@ -23,6 +32,33 @@
   
   <select id="getHrRolesById" resultType="cn.junhaox.vhrBack.model.Role">
     select r.* from role r, hr_role hrr where r.id = hrr.rid and hrr.hrid = #{id}
+  </select>
+
+  <select id="getAllHrs" resultMap="GetAllHrsMap">
+        SELECT
+            hr.id,
+            hr.`name`,
+            hr.phone,
+            hr.telephone,
+            hr.address,
+            hr.enabled,
+            hr.username,
+            hr.userface,
+            hr.remark,
+            r.`id` AS rid,
+            r.`name` AS rname,
+            r.`nameZh` AS rnameZh
+        FROM
+            hr
+        LEFT JOIN hr_role hrr ON hr.id = hrr.hrid
+        LEFT JOIN role r ON hrr.rid = r.id
+        WHERE
+            hr.id != #{hrid}
+  <if test="keyword != null">
+        AND hr.name LIKE CONCAT('%', #{keyword}, '%')
+  </if>
+        ORDER BY
+            hr.id;
   </select>
   
   <!--===============================自动生成==================================-->

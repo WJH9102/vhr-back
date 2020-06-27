@@ -1,5 +1,6 @@
 package cn.junhaox.vhrBack.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -31,10 +32,6 @@ public class Hr implements UserDetails {
     private String remark;
 
     private List<Role> roles;
-
-    public Boolean getEnabled() {
-        return enabled;
-    }
 
     public List<Role> getRoles() {
         return roles;
@@ -141,6 +138,7 @@ public class Hr implements UserDetails {
         return this.enabled;
     }
     @Override
+    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>(roles.size());
         roles.forEach(x -> {

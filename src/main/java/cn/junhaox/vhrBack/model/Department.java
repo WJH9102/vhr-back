@@ -16,6 +16,16 @@ public class Department {
 
     private Boolean isParent;
 
+    private Integer result;
+
+    public Integer getResult() {
+        return result;
+    }
+
+    public void setResult(Integer result) {
+        this.result = result;
+    }
+
     private List<Department> children = new ArrayList<>();
 
     public List<Department> getChildren() {
